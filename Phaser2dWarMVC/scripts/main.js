@@ -1,5 +1,6 @@
 ﻿/// <reference path="phaser.js" />
 var game = new Phaser.Game(1000, 700, Phaser.CANVAS, 'main', { preload: preload, create: create });
+
 var inTxt, background, menu;
 
 //bases
@@ -9,6 +10,7 @@ function preload() {
     game.load.image('background', 'images/background.jpg');
     game.load.spritesheet('planets', 'images/planets.png', 110, 110);
     game.load.spritesheet('menu', 'images/menu.jpg');
+    game.load.spritesheet('smallbuttons', 'images/buttons.png', 40, 40);
 }
 
 
@@ -20,16 +22,27 @@ function create() {
     var homeBase = game.add.sprite(106, 591, 'planets', 3);
     homeBase.anchor.set(0.5);
     homeBase.inputEnabled = true;
-    homeBase.events.onInputDown.add(BackgroundClicked);
+    homeBase.events.onInputDown.add(MenuVisible, { visible: true });
 
-    menu = game.add.sprite(game.width / 2, game.height / 2, 'menu');
-    menu.anchor.set(0.5);
-    menu.visible = false;
+    menu = game.add.sprite(125, 125, 'menu');
     
+    menu.visible = false;
+    var btnLeft = game.add.sprite(50, 40, 'smallbuttons', 0);
+    var btnRight = game.add.sprite(90, 40, 'smallbuttons', 1);
+    var btnClose = game.add.sprite(menu.width - 60, 20, 'smallbuttons', 2);
+    btnClose.inputEnabled = true;
+    btnClose.events.onInputDown.add(MenuVisible, {visible: false});
+    btnClose.scale.set(0.75);
+    btnRight.scale.set(0.75);
+    btnLeft.scale.set(0.75);
+
+    menu.addChild(btnLeft);
+    menu.addChild(btnRight);
+    menu.addChild(btnClose);
 }
 
-function BackgroundClicked(mouse) {
-    menu.visible = !menu.visible;
+function MenuVisible() {
+    menu.visible = this.visible;
 }
 
 //player will have a starting planet.
