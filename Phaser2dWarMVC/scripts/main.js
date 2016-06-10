@@ -1,4 +1,5 @@
 ﻿/// <reference path="phaser.js" />
+/// <reference path="GameObjects.js" />
 var game = new Phaser.Game(1000, 700, Phaser.CANVAS, 'main', { preload: preload, create: create });
 
 var inTxt, background, menu;
@@ -27,18 +28,16 @@ function create() {
     menu = game.add.sprite(125, 125, 'menu');
     
     menu.visible = false;
-    var btnLeft = game.add.sprite(50, 40, 'smallbuttons', 0);
-    var btnRight = game.add.sprite(90, 40, 'smallbuttons', 1);
+    
     var btnClose = game.add.sprite(menu.width - 60, 20, 'smallbuttons', 2);
     btnClose.inputEnabled = true;
     btnClose.events.onInputDown.add(MenuVisible, {visible: false});
     btnClose.scale.set(0.75);
-    btnRight.scale.set(0.75);
-    btnLeft.scale.set(0.75);
-
-    menu.addChild(btnLeft);
-    menu.addChild(btnRight);
     menu.addChild(btnClose);
+
+    var bsOne = new ButtonSet("Population", { x: 10, y: 0 }, menu);
+    var bsTwo = new ButtonSet("Technology", { x: 10, y: 50 }, menu);
+    var bsThree = new ButtonSet("Income", { x: 10, y: 100 }, menu);
 }
 
 function MenuVisible() {
